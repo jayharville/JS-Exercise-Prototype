@@ -39,9 +39,27 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
-
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = [];
 }
+
+Person.prototype.eat = function (someFood) { 
+  
+  if (this.stomach.length < 10) {
+    return this.stomach.push(someFood);
+  };
+};
+
+Person.prototype.poop = function() {
+  this.stomach = [];
+  return this.stomach;
+};
+
+Person.prototype.toString = function() {
+  return `${this.name}, ${this.age}`;
+};
 
 /*
   TASK 2
@@ -57,9 +75,30 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
+function Car(model, milesPerGallon) {
+  this.tank= 0;
+  this.odometer = 0;
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+};
 
+Car.prototype.fill = function (gallons) {
+  this.tank += gallons;
+};
+
+Car.prototype.drive = function (distance) {
+let milesToEmpty = this.tank * this.milesPerGallon;
+if (distance > milesToEmpty) {
+this.odometer += milesToEmpty;
+return `I ran out of fuel at ${this.odometer} miles!`
 }
+else {
+this.odometer += distance;
+this.tank = this.tank - (distance /this.milesPerGallon)
+}
+return distance;
+}
+
 
 /*
   TASK 3
@@ -68,18 +107,26 @@ function Car() {
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
+Baby.prototype = Object.create (Person.prototype)
 
-}
+function Baby(name, age, favoriteToy) {
+  this.name = name;
+  this.age = age;
+  this.favoriteToy = favoriteToy;
+  };
+  
+  Baby.prototype.play = function () {
+  return `Playing with ${this.favoriteToy}
+};
 
 /* 
   TASK 4
 
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. Global binding: its used when a function is contained in the global scope, and this value inside the function will be the window object
+  2. Implicit binding: its used when a function is called by a precedent dot, and the object before that dot is this.
+  3. New binding: its used when it creates a new object based on a constructor function, and later it passing in new arguments
+  4. Explicity Binding: its used when we use .call, .apply to create new objects from previous objects 
 */
 
 
@@ -92,4 +139,4 @@ if (typeof exports !== 'undefined') {
   if (Person) { module.exports.Person = Person }
   if (Car) { module.exports.Car = Car }
   if (Baby) { module.exports.Baby = Baby }
-}
+};
